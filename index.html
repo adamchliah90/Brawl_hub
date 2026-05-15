@@ -96,7 +96,7 @@
 
             try {
                 // Usamos la ruta estándar de gemini-pro que es la más estable para proyectos nuevos
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${MI_API_KEY}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${MI_API_KEY}`;
                 
                 const response = await fetch(url, {
                     method: 'POST',
