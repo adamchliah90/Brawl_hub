@@ -33,7 +33,7 @@
         button { background: var(--cyan); border: none; padding: 0 20px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         button:hover { background: #00b8cc; transform: scale(1.05); }
 
-        /* Scrollbar tuneada */
+        /* Scrollbar */
         #chat-box::-webkit-scrollbar { width: 5px; }
         #chat-box::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
     </style>
@@ -73,7 +73,7 @@
     </div>
 
     <script>
-        // === TU LLAVE GRATUITA DE HUGGING FACE ===
+        // === TOKEN DE HUGGING FACE ===
         const HF_TOKEN = "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"; 
         // ==========================================
 
@@ -84,7 +84,7 @@
             
             if (!texto) return;
 
-            // 1. Mostrar tu mensaje en el chat
+            // 1. Mostrar tu mensaje
             chatBox.innerHTML += `<div class="msg user">${texto}</div>`;
             input.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -95,8 +95,8 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                // Modelo Mistral gratuito e independiente de Google
-               const url = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct";
+                // Modelo Qwen2.5, ultra estable y siempre encendido
+                const url = "https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct";
                 
                 const response = await fetch(url, {
                     method: 'POST',
@@ -105,10 +105,13 @@
                         'Content-Type': 'application/json' 
                     },
                     body: JSON.stringify({
-                        inputs: `<s>[INST] Eres un experto profesional de Brawl Stars. Responde en ESPAÑOL con un consejo épico, corto y útil para: ${texto} [/INST]`,
+                        inputs: `<|im_start|>system\nEres un experto profesional del videojuego Brawl Stars. Da consejos tácticos, muy cortos, épicos y directos en ESPAÑOL.<|im_end|>\n<|im_start|>user\nDame un consejo para: ${texto}<|im_end|>\n<|im_start|>assistant\n`,
                         parameters: { 
-                            max_new_tokens: 150,
-                            return_full_text: false 
+                            max_new_tokens: 100,
+                            return_full_text: false
+                        },
+                        options: {
+                            wait_for_model: true
                         }
                     })
                 });
@@ -116,13 +119,21 @@
                 const data = await response.json();
                 document.getElementById(tempId).remove();
 
-                // 3. Mostrar respuesta de la IA limpia
-                let respuestaIA = data[0].generated_text || "¡Estoy listo para la batalla! Pregúntame sobre cualquier brawler.";
-                chatBox.innerHTML += `<div class="msg bot">🤖 ${respuestaIA.trim()}</div>`;
+                // 3. Extraer la respuesta limpia
+                let respuestaIA = "";
+                if (data && data[0] && data[0].generated_text) {
+                    respuestaIA = data[0].generated_text.split("<|im_start|>assistant").pop().replace("<|im_end|>", "").trim();
+                } else if (data && data.generated_text) {
+                    respuestaIA = data.generated_text.trim();
+                } else {
+                    respuestaIA = "¡Estoy listo para el combate! Pregúntame sobre cualquier Brawler.";
+                }
+                
+                chatBox.innerHTML += `<div class="msg bot">🤖 ${respuestaIA}</div>`;
                 
             } catch (error) {
                 document.getElementById(tempId).remove();
-                chatBox.innerHTML += `<div class="msg bot" style="color:#ff4444">⚠️ Error: La IA está descansando. ¡Prueba de nuevo en unos segundos!</div>`;
+                chatBox.innerHTML += `<div class="msg bot" style="color:#ff4444">⚠️ Buscando conexión con el servidor de combate... ¡Prueba otra vez!</div>`;
             }
             chatBox.scrollTop = chatBox.scrollHeight;
         }
