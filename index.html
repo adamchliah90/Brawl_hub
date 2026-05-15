@@ -73,9 +73,9 @@
     </div>
 
     <script>
-        // === PEGA TU API KEY AQUÍ ABAJO ===
+        // === VE A GOOGLE AI STUDIO, COPIA TU LLAVE ENTERA Y PÉGALA AQUÍ ===
         const MI_API_KEY = "AIzaSyCmo6OVr731Z3UJ5gg8jb11aUQpRvGaYTc"; 
-        // =================================
+        // =================================================================
 
         async function enviarMensaje() {
             const input = document.getElementById('user-input');
@@ -95,7 +95,8 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${MI_API_KEY}`;
+                // Usamos la ruta estándar de gemini-pro que es la más estable para proyectos nuevos
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${MI_API_KEY}`;
                 
                 const response = await fetch(url, {
                     method: 'POST',
