@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrawlBrain AI - Tu Camino al Millón</title>
+    <style>
+        /* ESTO ES EL DISEÑO (CSS) */
+        body { 
+            background-color: #0f0f12; 
+            color: white; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; 
+            padding: 40px; 
+        }
+        h1 { color: #f3ca10; font-size: 3.5rem; text-shadow: 2px 2px #e67e22; }
+        .container { 
+            background: #1c1c21; 
+            border: 3px solid #f3ca10; 
+            border-radius: 20px; 
+            padding: 30px; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+        }
+        select {
+            background: #333;
+            color: white;
+            padding: 10px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        button { 
+            background-color: #ff4a4a; 
+            color: white; 
+            border: none; 
+            padding: 15px 40px; 
+            font-size: 1.3rem; 
+            font-weight: bold; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            box-shadow: 0px 5px 0px #b32d2d;
+            transition: 0.1s;
+        }
+        button:active { transform: translateY(4px); box-shadow: 0px 1px 0px #b32d2d; }
+        #resultado { 
+            margin-top: 30px; 
+            padding: 20px;
+            border-radius: 10px;
+            background: #25252b;
+            color: #00e5ff;
+            font-size: 1.4rem;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>BRAWLBRAIN <span style="color:#00e5ff">AI</span></h1>
+    <p>Probabilidad de éxito: <span style="color:#00ff00; font-weight:bold;">2% y subiendo...</span></p>
+    
+    <div class="container">
+        <h3>¿A quién te enfrentas en Brawl Stars?</h3>
+        
+        <select id="enemigo">
+            <option value="Edgar">Edgar</option>
+            <option value="Shelly">Shelly</option>
+            <option value="Colt">Colt</option>
+            <option value="Mortis">Mortis</option>
+            <option value="El Primo">El Primo</option>
+            <option value="Crow">Crow</option>
+        </select>
+
+        <br>
+        <button onclick="calcularIA()">CALCULAR COUNTER</button>
+
+        <div id="resultado">Esperando datos del rival...</div>
+    </div>
+
+    <script>
+        /* ESTO ES LA LÓGICA (JAVASCRIPT) */
+        function calcularIA() {
+            const brawler = document.getElementById("enemigo").value;
+            const res = document.getElementById("resultado");
+            
+            res.innerHTML = "🤖 Analizando meta de 2026...";
+            
+            // Simulamos que la IA piensa un poco
+            setTimeout(() => {
+                if(brawler === "Edgar") {
+                    res.innerHTML = "✅ Usa a <strong>BULL</strong> o <strong>SHELLY</strong>. Mantén tu súper para cuando se te lance encima.";
+                } else if(brawler === "Shelly") {
+                    res.innerHTML = "✅ Usa a <strong>COLT</strong> o <strong>PIPER</strong>. Mantén la distancia, no dejes que se acerque.";
+                } else if(brawler === "Colt") {
+                    res.innerHTML = "✅ Usa a <strong>MORTIS</strong>. Esquiva en zigzag y ataca cuando gaste sus 3 básicos.";
+                } else {
+                    res.innerHTML = "✅ Para vencer a " + brawler + " necesitas mantener el control del mapa y jugar en equipo.";
+                }
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
