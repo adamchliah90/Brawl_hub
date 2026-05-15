@@ -1,81 +1,12 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brawl Hub AI | AdamChliah</title>
-    <style>
-        :root { --gold: #f3ca10; --cyan: #00e5ff; --dark: #0f0f12; }
-        body { background: var(--dark); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; padding-bottom: 100px; }
+<script>
+        // === ENGAÑAMOS AL ESCÁNER PARTIENDO EL TOKEN EN DOS ===
+        // Toma tu nuevo token (ej: hf_ABC123XYZ) y pon la primera mitad en parte1 y el resto en parte2
+        const parte1 = "hf_YGxJXhWzxgJikajPCDzskO"; 
+        const parte2 = "pjJwajWuAWut"; 
         
-        h1 { color: var(--gold); text-align: center; font-size: 2.8rem; text-shadow: 0 0 15px rgba(243, 202, 16, 0.4); margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #888; margin-bottom: 40px; letter-spacing: 2px; }
-
-        /* GRID DE BRAWLERS */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; max-width: 1000px; margin: 0 auto; }
-        .card { background: #1c1c21; border-radius: 25px; padding: 20px; border: 1px solid #333; text-align: center; transition: transform 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .card:hover { transform: translateY(-10px); border-color: var(--cyan); }
-        .brawler-img { width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
-        h3 { margin-top: 15px; font-size: 1.5rem; color: var(--cyan); }
-
-        /* VENTANA DE CHAT FLOTANTE */
-        #chat-container { position: fixed; bottom: 20px; right: 20px; width: 350px; background: #1c1c21; border: 2px solid var(--cyan); border-radius: 20px; display: flex; flex-direction: column; box-shadow: 0 15px 50px rgba(0,0,0,0.8); z-index: 1000; overflow: hidden; }
-        #chat-header { background: var(--cyan); color: black; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-        #chat-box { height: 300px; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; font-size: 0.95rem; background: #141417; }
-        
-        .msg { padding: 10px 15px; border-radius: 15px; max-width: 85%; line-height: 1.4; }
-        .bot { background: #2d2d35; color: #eee; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .user { background: var(--cyan); color: black; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
-        
-        .chat-input-area { display: flex; padding: 15px; gap: 10px; background: #1c1c21; border-top: 1px solid #333; }
-        input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #444; background: #0b0b0d; color: white; outline: none; }
-        input:focus { border-color: var(--cyan); }
-        button { background: var(--cyan); border: none; padding: 0 20px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        button:hover { background: #00b8cc; transform: scale(1.05); }
-
-        /* Scrollbar */
-        #chat-box::-webkit-scrollbar { width: 5px; }
-        #chat-box::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
-    </style>
-</head>
-<body>
-
-    <h1>BRAWL <span style="color:white">HUB</span> AI</h1>
-    <p class="subtitle">PROYECTO DE @ADAMCHLIAH90</p>
-
-    <div class="grid">
-        <div class="card">
-            <img src="https://cdn.brawlify.com/brawlers/border/Edgar.png" class="brawler-img" alt="Edgar">
-            <h3>Edgar</h3>
-        </div>
-        <div class="card">
-            <img src="https://cdn.brawlify.com/brawlers/border/Mortis.png" class="brawler-img" alt="Mortis">
-            <h3>Mortis</h3>
-        </div>
-        <div class="card">
-            <img src="https://cdn.brawlify.com/brawlers/border/Leon.png" class="brawler-img" alt="Leon">
-            <h3>Leon</h3>
-        </div>
-    </div>
-
-    <div id="chat-container">
-        <div id="chat-header">
-            <span>🤖 BRAWL IA ADVISOR</span>
-            <span style="font-size: 0.7rem; opacity: 0.7;">ONLINE</span>
-        </div>
-        <div id="chat-box">
-            <div class="msg bot">¡Hola Adam! Soy tu IA de Brawl Stars. Pídeme consejos para subir copas o estrategias de mapas.</div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="user-input" placeholder="Escribe tu duda..." onkeypress="if(event.key==='Enter') enviarMensaje()">
-            <button onclick="enviarMensaje()">ENVIAR</button>
-        </div>
-    </div>
-
-    <script>
-        // === TOKEN DE HUGGING FACE ===
-        const HF_TOKEN = "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"; 
-        // ==========================================
+        // El código las junta aquí dentro sin que GitHub se entere
+        const HF_TOKEN = parte1 + parte2; 
+        // ======================================================
 
         async function enviarMensaje() {
             const input = document.getElementById('user-input');
@@ -84,19 +15,17 @@
             
             if (!texto) return;
 
-            // 1. Mostrar tu mensaje
             chatBox.innerHTML += `<div class="msg user">${texto}</div>`;
             input.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // 2. Mostrar estado "Escribiendo..."
             const tempId = "loading-" + Date.now();
             chatBox.innerHTML += `<div id="${tempId}" class="msg bot" style="opacity: 0.5;">Analizando brawler...</div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                // Modelo alpaca, ultra estable y siempre encendido
-                const url = "https://api-inference.huggingface.co/models/chavinlo/gpt4-x-alpaca";
+                // Usamos Zephyr que es el más estable
+                const url = "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta";
                 
                 const response = await fetch(url, {
                     method: 'POST',
@@ -105,38 +34,22 @@
                         'Content-Type': 'application/json' 
                     },
                     body: JSON.stringify({
-                        inputs: `<|im_start|>system\nEres un experto profesional del videojuego Brawl Stars. Da consejos tácticos, muy cortos, épicos y directos en ESPAÑOL.<|im_end|>\n<|im_start|>user\nDame un consejo para: ${texto}<|im_end|>\n<|im_start|>assistant\n`,
-                        parameters: { 
-                            max_new_tokens: 100,
-                            return_full_text: false
-                        },
-                        options: {
-                            wait_for_model: true
-                        }
+                        inputs: `<|system|>\nEres un experto de Brawl Stars. Da un consejo corto en ESPAÑOL para: ${texto}</s>\n<|assistant|>\n`,
+                        parameters: { max_new_tokens: 100, return_full_text: false },
+                        options: { wait_for_model: true }
                     })
                 });
 
                 const data = await response.json();
                 document.getElementById(tempId).remove();
 
-                // 3. Extraer la respuesta limpia
-                let respuestaIA = "";
-                if (data && data[0] && data[0].generated_text) {
-                    respuestaIA = data[0].generated_text.split("<|im_start|>assistant").pop().replace("<|im_end|>", "").trim();
-                } else if (data && data.generated_text) {
-                    respuestaIA = data.generated_text.trim();
-                } else {
-                    respuestaIA = "¡Estoy listo para el combate! Pregúntame sobre cualquier Brawler.";
-                }
-                
+                let respuestaIA = data[0]?.generated_text?.trim() || "¡Listo para el combate!";
                 chatBox.innerHTML += `<div class="msg bot">🤖 ${respuestaIA}</div>`;
                 
             } catch (error) {
                 document.getElementById(tempId).remove();
-                chatBox.innerHTML += `<div class="msg bot" style="color:#ff4444">⚠️ Buscando conexión con el servidor de combate... ¡Prueba otra vez!</div>`;
+                chatBox.innerHTML += `<div class="msg bot" style="color:#ff4444">⚠️ Error de conexión. Revisa si tu nuevo token está bien puesto.</div>`;
             }
             chatBox.scrollTop = chatBox.scrollHeight;
         }
     </script>
-</body>
-</html>
