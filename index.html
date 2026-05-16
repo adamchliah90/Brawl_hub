@@ -11,12 +11,11 @@
         h1 { color: var(--gold); text-align: center; font-size: 2.8rem; text-shadow: 0 0 15px rgba(243, 202, 16, 0.4); margin-bottom: 5px; }
         .subtitle { text-align: center; color: #888; margin-bottom: 40px; letter-spacing: 2px; }
 
-        /* GRID DE BRAWLERS */
+        /* GRID DE BRAWLERS SIN IMÁGENES ROTAS */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; max-width: 1000px; margin: 0 auto; }
-        .card { background: #1c1c21; border-radius: 25px; padding: 20px; border: 1px solid #333; text-align: center; transition: transform 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .card { background: #1c1c21; border-radius: 25px; padding: 30px 20px; border: 1px solid #333; text-align: center; transition: transform 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         .card:hover { transform: translateY(-10px); border-color: var(--cyan); }
-        .brawler-img { width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
-        h3 { margin-top: 15px; font-size: 1.5rem; color: var(--cyan); }
+        h3 { margin: 0; font-size: 1.8rem; color: var(--cyan); }
 
         /* VENTANA DE CHAT FLOTANTE */
         #chat-container { position: fixed; bottom: 20px; right: 20px; width: 350px; background: #1c1c21; border: 2px solid var(--cyan); border-radius: 20px; display: flex; flex-direction: column; box-shadow: 0 15px 50px rgba(0,0,0,0.8); z-index: 1000; overflow: hidden; }
@@ -44,26 +43,23 @@
 
     <div class="grid">
         <div class="card">
-            <img src="https://cdn.brawlify.com/brawlers/border/Edgar.png" class="brawler-img" alt="Edgar">
             <h3>Edgar</h3>
         </div>
         <div class="card">
-            <img src="https://cdn.brawlify.com/brawlers/border/Mortis.png" class="brawler-img" alt="Mortis">
             <h3>Mortis</h3>
         </div>
         <div class="card">
-            <img src="https://cdn.brawlify.com/brawlers/border/Leon.png" class="brawler-img" alt="Leon">
             <h3>Leon</h3>
         </div>
     </div>
 
     <div id="chat-container">
         <div id="chat-header">
-            <span>🤖 BRAWL IA ADVISOR (FREE)</span>
+            <span>🤖 BRAWL IA ADVISOR</span>
             <span style="font-size: 0.7rem; opacity: 0.7;">ONLINE</span>
         </div>
         <div id="chat-box">
-            <div class="msg bot">¡Hola Adam! Sistema conectado a la IA libre de claves. Pregúntame tácticas sobre cualquier brawler o mapa.</div>
+            <div class="msg bot">¡Hola Adam! Sistema optimizado. Pregúntame lo que quieras sobre Brawl Stars.</div>
         </div>
         <div class="chat-input-area">
             <input type="text" id="user-input" placeholder="Escribe tu duda..." onkeypress="if(event.key==='Enter') enviarMensaje()">
@@ -79,32 +75,40 @@
             
             if (!texto) return;
 
-            // Mensaje de usuario
+            // Añadir mensaje del usuario
             chatBox.innerHTML += `<div class="msg user">${texto}</div>`;
             input.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Carga
+            // Indicador de carga
             const tempId = "loading-" + Date.now();
             chatBox.innerHTML += `<div id="${tempId}" class="msg bot" style="opacity: 0.5;">Pensando...</div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                // Endpoint público sin clave de API
-                const url = `https://text.pollinations.ai/prompt/${encodeURIComponent("Eres un experto en Brawl Stars. Da un consejo muy corto en español sobre: " + texto)}`;
+                // Usamos el método simplificado de la API de text.pollinations.ai
+                const promptFormateado = encodeURIComponent("Eres un experto profesional de Brawl Stars. Da un consejo táctico muy corto en español de máximo dos líneas para: " + texto);
+                const url = `https://text.pollinations.ai/prompt/${promptFormateado}`;
 
-                const response = await fetch(url);
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: { 'Accept': 'text/plain' }
+                });
                 
-                if (!response.ok) throw new Error("Error en servidor");
+                if (!response.ok) throw new Error("Error de respuesta");
 
                 const respuestaIA = await response.text();
                 
-                document.getElementById(tempId).remove();
+                const loadingElement = document.getElementById(tempId);
+                if (loadingElement) loadingElement.remove();
+
                 chatBox.innerHTML += `<div class="msg bot">🤖 ${respuestaIA.trim()}</div>`;
 
             } catch (error) {
-                document.getElementById(tempId).remove();
-                chatBox.innerHTML += `<div class="msg bot" style="color:#ff4444">⚠️ Error de conexión. Inténtalo de nuevo.</div>`;
+                const loadingElement = document.getElementById(tempId);
+                if (loadingElement) loadingElement.remove();
+                chatBox.innerHTML += `<div class="msg bot" style="color:#ff4444">⚠️ El navegador bloqueó la señal. Reintentando...</div>`;
+                console.error(error);
             }
             chatBox.scrollTop = chatBox.scrollHeight;
         }
